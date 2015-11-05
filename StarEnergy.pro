@@ -34,3 +34,6 @@ ios {
     OTHER_FILES += $$QMAKE_INFO_PLIST
 }
 
+DISTFILES += \
+    qml/game/Curtain.qml
+

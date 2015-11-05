@@ -38,6 +38,10 @@ BaseScene {
      */
     signal quitPressed
 
+    /*!
+      \qmlsignal void MenuScene::quitPressed()
+      \brief It is emitted when the user selects "Highscores".
+     */
     signal highscoresPressed()
 
     //do not need to see the back button here

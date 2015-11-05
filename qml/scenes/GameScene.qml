@@ -88,6 +88,10 @@ BaseScene {
     }
 
 
+    /*!
+      \qmlmethod void GameScene::startGame()
+      It starts the game from the begining.
+    */
     function startGame() {
         curtain.close()
         labelGameOver.visible = false
@@ -97,6 +101,10 @@ BaseScene {
         generateGameStars()
     }
 
+    /*!
+      \qmlmethod void GameScene::stopGame()
+      It stops the game, removes all stars and flying energy and saves the scores.
+    */
     function stopGame() {
         var toRemoveEntityTypes = ["starType", "bulletType"];
         entityManager.removeEntitiesByFilter(toRemoveEntityTypes);
@@ -109,6 +117,10 @@ BaseScene {
         }
     }
 
+    /*!
+      \qmlmethod void GameScene::nextLevel()
+      It initializes the next level if the user has enery points.
+    */
     function nextLevel() {
         if( usersEnergy > 0 ) {
             curtain.open()
@@ -235,6 +247,15 @@ BaseScene {
     }
 
 
+    /*!
+      \qmlmethod int GameScene::generateState( int level )
+      It generates a state of every cell on the game field for a level \a level.
+      Return values can be:
+       -1 the cell is passed.
+       0 - the star0 is put on the cell.
+       1 - the star1 is put on the cell.
+       2 - the star2 is put on the cell.
+    */
     function generateState( level ) {
         var pass = Math.round( utils.generateRandomValueBetween(1,100) )
         var probPass = 7+2*level //probability to pass a cell
@@ -270,6 +291,10 @@ BaseScene {
         }
     }
 
+    /*!
+      \qmlmethod void GameScene::generateGameStars()
+      It puts a str on every cell on the game field.
+    */
     function generateGameStars()
     {
         __nextLevelAvailable = false
@@ -304,24 +329,38 @@ BaseScene {
         __nextLevelAvailable = true
     }
 
-    //it removes a bullet from the game field whenever the bullet touches a star
+    /*!
+      \qmlmethod void GameScene::starTouchedByBulletSlot( string energyEntityId )
+      This slot removes a flying energy from the game field whenever it touches a star
+    */
     function starTouchedByBulletSlot( bulletEntityId ) {
         entityManager.removeEntityById( bulletEntityId )
     }
 
-    //it decreases the counter of stars when a star is exploding
+    /*!
+      \qmlmethod void GameScene::starIsExplodingSlot( scores )
+      This slot decreases the counter of stars when a star is exploding. It pass' scores for the exploding star.
+    */
     function starIsExplodingSlot( scores ) {
         countOfStars = countOfStars - 1
         totalScores += scores
     }
 
-    //it decreases the counter of energy when the user touches a star
+    /*!
+      \qmlmethod void GameScene::starClickedSlot( scores )
+      This slot decreases the counter of energy when the user touches a star.
+      It also gives the user ten points fot burning energy
+    */
     function starClickedSlot() {
         usersEnergy -= 1
-        totalScores += 10 //add 10 points to the scores whenever the user burns one energy
+        totalScores += 10
     }
 
-    //it generates a point of energy
+    /*!
+      \qmlmethod void GameScene::starClickedSlot( index )
+      This slot generates a picture of energy to animate getting an energy point.
+      \a index - a number of cell where from the pictures starts moving towards game scores.
+    */
     function generateEnergySlot( index ) {
         var item = repeater.itemAt(index)
         var columns = grid.columns
@@ -381,40 +420,14 @@ BaseScene {
     }
 
 
-    Rectangle {
+    Curtain {
         id: curtain
-        z: 10
-        anchors.fill: parent
-        color: "black"
-        visible: opacity != 0
-        opacity: 0
-        Column {
-            anchors.centerIn: parent
-            spacing: 20
-            Label {
-                id: scoreLabelCurtain
-                anchors.horizontalCenter: parent.horizontalCenter
-                text: qsTr("Scores") + ": " + totalScoresString
-                font.pixelSize: 20
-                color: "white"
-            }
-            Label {
-                id: curtainLabel
-                anchors.horizontalCenter: parent.horizontalCenter
-                text: qsTr("Next level")
-                font.pixelSize: 24
-                color: "white"
-            }
-        }
-        Behavior on opacity { NumberAnimation { id: animCurtain; duration: 2000 } }
-        function open() {
-            animCurtain.duration = 2000
-            curtain.opacity = 1
-        }
-        function close() {
-            animCurtain.duration = 400
-            curtain.opacity = 0
-        }
+        totalScores: totalScoresString
+    }
+    Binding {
+        target: curtain
+        property: "totalScores"
+        value: totalScoresString
     }
 
 
