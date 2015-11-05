@@ -142,7 +142,7 @@ GameWindow {
         source: app.state == "game" ?
                     (settings.musicEnabled ? "../assets/music/MysteriousMagic.mp3" : "") :
                     (settings.musicEnabled ? "../assets/music/ChamberOfJewels.mp3" : "")
-        volume: 0.3
+        volume: 0.5
     }
 
     Component.onCompleted: {

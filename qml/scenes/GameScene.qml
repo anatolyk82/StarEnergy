@@ -93,6 +93,8 @@ BaseScene {
       It starts the game from the begining.
     */
     function startGame() {
+        removeStarsAndFlyingEnergy()
+
         curtain.close()
         labelGameOver.visible = false
         currentLevel = 1
@@ -106,8 +108,7 @@ BaseScene {
       It stops the game, removes all stars and flying energy and saves the scores.
     */
     function stopGame() {
-        var toRemoveEntityTypes = ["starType", "bulletType"];
-        entityManager.removeEntitiesByFilter(toRemoveEntityTypes);
+        removeStarsAndFlyingEnergy()
 
         var savedTotalScores = myLocalStorage.getValue("totalScores")
         if( savedTotalScores == undefined ) {
@@ -127,6 +128,7 @@ BaseScene {
             timerToGoToTheNextLevel.start()
         }
     }
+
 
     Label {
         id: levelLabel
@@ -371,6 +373,7 @@ BaseScene {
         usersEnergy += 1
     }
 
+
     //It helps to animate a point of energy when the user gets one.
     Component {
         id: componentImageEnergy
@@ -405,8 +408,7 @@ BaseScene {
         triggeredOnStart: false
         onTriggered: {            
             //destroy all stars and flying energy
-            var toRemoveEntityTypes = ["starType", "bulletType"];
-            entityManager.removeEntitiesByFilter(toRemoveEntityTypes);
+            removeStarsAndFlyingEnergy()
 
             //generate stars for the next level
             generateGameStars()
@@ -456,9 +458,28 @@ BaseScene {
         visible: false
     }
 
+    /*!
+      \qmlmethod void GameScene::removeStarsAndFlyingEnergy()
+      It removes all stars and all flying energy from the game field. It also disconnects all slots from all star signals.
+    */
+    function removeStarsAndFlyingEnergy() {
+        //first, disconnect all signals
+        var bufStars = entityManager.getEntityArrayByType("starType")
+        for( var j=0; j<bufStars.length; j++ ) {
+            var starObject = bufStars[j]
+            starObject.touchedByBullet.disconnect( starTouchedByBulletSlot )
+            starObject.starIsExploding.disconnect( starIsExplodingSlot )
+            starObject.entityClicked.disconnect( starClickedSlot )
+            starObject.generateEnergy.disconnect( generateEnergySlot )
+        }
+        //second, remove all objects
+        var toRemoveEntityTypes = ["starType", "bulletType"];
+        entityManager.removeEntitiesByFilter(toRemoveEntityTypes);
+    }
 
     Component.onCompleted: {
         entityManager.createPooledEntitiesFromUrl( Qt.resolvedUrl("../game/Bullet.qml"), (numCells*4) )
+        entityManager.createPooledEntitiesFromUrl( Qt.resolvedUrl("../game/Star.qml"), numCells )
     }
 
 }

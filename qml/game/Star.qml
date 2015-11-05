@@ -4,7 +4,7 @@ import QtQuick 2.4
 EntityBaseDraggable {
     id: star
 
-    //poolingEnabled: true
+    poolingEnabled: true
     entityType: "starType"
 
     property alias radius: starCollider.radius
@@ -21,7 +21,7 @@ EntityBaseDraggable {
 
     signal starIsExploding( int scores )
 
-    property int probabilityToGenerateEnergy: 30
+    property int probabilityToGenerateEnergy: 10
     signal generateEnergy( int index )
 
     property int scores: 10
@@ -30,7 +30,6 @@ EntityBaseDraggable {
         State {
             when: countTouches == 0
             name: "state0"
-            //PropertyChanges { target: object }
         },
         State {
             when: countTouches == 1
@@ -49,6 +48,7 @@ EntityBaseDraggable {
     ]
 
     onStateChanged: {
+        //console.log(">>>>>>>>>>>>>> star:["+entityId+"] state:["+state+"]")
         if( star.state == "explode" ) {
             paddingBetween.visible = false
             paddingEnd.visible = true
@@ -60,9 +60,6 @@ EntityBaseDraggable {
             if( randomValue <= probabilityToGenerateEnergy ) {
                 star.generateEnergy( starIndex )
             }
-        } else {
-            //paddingBetween.visible = true
-            //paddingBetween.restart()
         }
     }
 
@@ -104,16 +101,14 @@ EntityBaseDraggable {
         y: starCollider.y
         width: star.radius*2
         height: width
-        running: true
+        running: state != "explode"
+        visible: state != "explode"
         loops: AnimatedSprite.Infinite
         source: countTouches == 0 ? "../../assets/img/state0.png" : (countTouches == 1 ? "../../assets/img/state1.png" : "../../assets/img/state2.png")
         frameHeight: 128
         frameWidth: 128
         frameCount: 32
         frameDuration: 100
-        onCurrentFrameChanged: {
-            //console.log(star.entityId + "===>:"+padding.currentFrame)
-        }
     }
     AnimatedSpriteVPlay {
         id: paddingBetween
@@ -221,29 +216,28 @@ EntityBaseDraggable {
 
 
     onMovedToPool: {
-        //padding.running = false
-        //paddingBetween.running = false
-        //paddingEnd.running = false
-        //countTouches = 0
+        star.state == "pool"
+        countTouches = 0
+
+        //console.log("TP#TP#TP#TP#TP#TP#TP#TP#TP#TP#TP#TP#:"+entityId)
+        padding.running = false
+
+        paddingBetween.running = false
+        paddingBetween.visible = false
+
+        paddingEnd.running = false
+        paddingEnd.visible = false
+    }
+    onUsedFromPool: {
+        //console.log("FP#FP#FP#FP#FP#FP#FP#FP#FP#FP#FP#FP#:"+entityId)
+        padding.restart()
+        padding.visible = true
     }
 
-
-    //paddingBetween.visible = false
-    //paddingEnd.visible = true
-    //paddingEnd.restart()
-    //padding.visible = false
 
 
     onEntityCreated: {
         padding.restart()
         padding.visible = true
-        /*padding.running = true
-        padding.pause()
-        padding.currentFrame = Math.round( Math.random()*padding.frameCount )
-        console.log(star.entityId + " start with ===>:"+padding.currentFrame)
-
-        padding.visible = true
-        //padding.running = true
-        padding.resume()*/
     }
 }
