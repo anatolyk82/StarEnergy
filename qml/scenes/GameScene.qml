@@ -71,9 +71,10 @@ BaseScene {
     }
 
     function nextLevel() {
-        curtain.open()
-        timerToGoToTheNextLevel.start()
-        usersEnergy += 1
+        if( usersEnergy > 0 ) {
+            curtain.open()
+            timerToGoToTheNextLevel.start()
+        }
     }
 
     Label {
@@ -117,27 +118,6 @@ BaseScene {
         }
     }
 
-    /*Row {
-        anchors.top: parent.top
-        anchors.topMargin: 20
-        anchors.right: parent.right
-        anchors.rightMargin: 10
-        spacing: 10
-        Image {
-            id: imgEnergy
-            source: "../../assets/img/bullet.png"
-            anchors.verticalCenter: parent.verticalCenter
-            width: 20
-            height: width
-        }
-        Label {
-            id: energyLabel
-            anchors.verticalCenter: parent.verticalCenter
-            text: usersEnergy
-            color: "white"
-            font.pixelSize: 20
-        }
-    }*/
 
     PhysicsWorld {
         id: world
@@ -294,7 +274,7 @@ BaseScene {
     //it decreases the counter of energy when the user touches a star
     function starClickedSlot() {
         usersEnergy -= 1
-        totalScores += 10
+        totalScores += 10 //add 10 points to the scores whenever the user burns one energy
     }
 
     //it generates a point of energy
@@ -394,12 +374,16 @@ BaseScene {
 
     Timer {
         id: timerGameOver
-        interval: 3000
-        repeat: false
+        interval: 2000
+        repeat: true
         triggeredOnStart: false
         onTriggered: {
-            stopGame()
-            labelGameOver.visible = true
+            var bufBullets = entityManager.getEntityArrayByType("bulletType")
+            if( bufBullets.length == 0 ) {
+                stopGame()
+                labelGameOver.visible = true
+                timerGameOver.stop()
+            }
         }
     }
 
