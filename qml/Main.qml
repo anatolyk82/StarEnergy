@@ -140,8 +140,8 @@ GameWindow {
     BackgroundMusic {
         id: backgroundMusic
         source: app.state == "game" ?
-                    (settings.musicEnabled ? "../assets/music/WhimsicalPopsicle.mp3" : "") :
-                    (settings.musicEnabled ? "../assets/music/InsertQuarter.mp3" : "")
+                    (settings.musicEnabled ? "../assets/music/MysteriousMagic.mp3" : "") :
+                    (settings.musicEnabled ? "../assets/music/ChamberOfJewels.mp3" : "")
         volume: 0.3
     }
 

@@ -3,24 +3,62 @@ import QtQuick 2.0
 import "../common"
 import "../game"
 
+/*!
+  \qmltype GameScene
+  \inherits BaseScene
+  \brief The main game field.
+*/
+
+
 BaseScene {
     id:gameScene
 
-    //number of cells on the game field
+    /*!
+      \qmlproperty int GameScene::numCells
+      \brief This property holds the number of cells on the game field.
+      By default it is 42
+     */
     property int numCells: 42
 
-    //current game level
+    /*!
+      \qmlproperty int GameScene::currentLevel
+      \brief This property holds the number of current game level.
+     */
     property int currentLevel: 0
 
-    //the property helps to create a unique id for a star
+    /*!
+      \qmlproperty int GameScene::__uniqueStarId
+      \brief This property helps to create a unique id for a star
+     */
     property int __uniqueStarId: 0
 
-    //the property holds the number of genereated stars for each level
+    /*!
+      \qmlproperty int GameScene::countOfStars
+      \brief The property holds the number of genereated stars for each level
+     */
     property int countOfStars: 0
 
-    //the property holds the number of user's energy
+    /*!
+      \qmlproperty int GameScene::countOfStars
+      \brief The property holds the available number of user's energy
+     */
     property int usersEnergy: 10
+
+    /*!
+      \qmlproperty int GameScene::totalScores
+      \brief The property holds game scores earned by the user
+     */
+    property int totalScores: 0
+
+    /*!
+      \qmlproperty int GameScene::totalScoresString
+      \brief It's a formated string of game scores.
+     */
+    property string totalScoresString: "00000"
+
     onUsersEnergyChanged: {
+        //if the user runs out of energy, we start the "game over" timer to check whether there are
+        //flying energy on the game field to finish the game.
         if( usersEnergy == 0 ) {
             timerGameOver.start()
         } else {
@@ -28,8 +66,7 @@ BaseScene {
         }
     }
 
-    property int totalScores: 0
-    property string totalScoresString: "00000"
+
     onTotalScoresChanged: {
         if( totalScores < 9 ) {
             totalScoresString = "0000" + totalScores
@@ -44,7 +81,9 @@ BaseScene {
         }
     }
 
+
     onBackButtonPressed: {
+        //when the user pushes "Back", stop the game
         stopGame()
     }
 
@@ -219,7 +258,12 @@ BaseScene {
     }
 
 
+    /*!
+      \qmlproperty bool GameScene::__nextLevelAvailable
+      \brief This property for internal use. It shows whether the next level available to go.
+     */
     property bool __nextLevelAvailable: true
+
     onCountOfStarsChanged: {
         if( (countOfStars == 0)&&(__nextLevelAvailable) ) {
             nextLevel()
@@ -288,7 +332,7 @@ BaseScene {
         usersEnergy += 1
     }
 
-    //Animation of energy
+    //It helps to animate a point of energy when the user gets one.
     Component {
         id: componentImageEnergy
         Image {
@@ -336,6 +380,7 @@ BaseScene {
         }
     }
 
+
     Rectangle {
         id: curtain
         z: 10
@@ -372,6 +417,7 @@ BaseScene {
         }
     }
 
+
     Timer {
         id: timerGameOver
         interval: 2000
@@ -386,6 +432,7 @@ BaseScene {
             }
         }
     }
+
 
     Label {
         id: labelGameOver

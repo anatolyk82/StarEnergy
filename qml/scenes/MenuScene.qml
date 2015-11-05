@@ -46,7 +46,7 @@ BaseScene {
     // menu
     Column {
         anchors.centerIn: parent
-        anchors.verticalCenterOffset: 10
+        anchors.verticalCenterOffset: 25
         spacing: app.portrait ? 20 : 15
         z: 5
         MenuButton {

@@ -90,4 +90,10 @@ Scene {
         color: "blue"
         font.bold: true
     }
+
+    ParticleVPlay {
+        id: particleStars
+        fileName: "../../assets/img/stars.json"
+        autoStart: true
+    }
 }
