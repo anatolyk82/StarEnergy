@@ -126,6 +126,7 @@ BaseScene {
         if( usersEnergy > 0 ) {
             curtain.open()
             timerToGoToTheNextLevel.start()
+            playSound("../../assets/sounds/nextLevel.wav")
         }
     }
 
@@ -260,23 +261,23 @@ BaseScene {
     */
     function generateState( level ) {
         var pass = Math.round( utils.generateRandomValueBetween(1,100) )
-        var probPass = 7+2*level //probability to pass a cell
+        var probPass = 5+2*level //probability to pass a cell
         if( pass < probPass ) {
-            return -1
+            return ""
         }
 
-        var probTouches0 = 20+2*level
+        var probTouches0 = 30+2*level
         probTouches0 = probTouches0 > 100 ? 100 : probTouches0
-        var probTouches1 = 55+2*level
+        var probTouches1 = 75+1*level
         probTouches1 = probTouches1 > 100 ? 100 : probTouches1
 
         var rV = Math.round( utils.generateRandomValueBetween(1,100) )
         if( rV <= probTouches0 ) {
-            return 0
+            return "state0"
         } else if( rV <= probTouches1 ) {
-            return 1
+            return "state1"
         } else {
-            return 2
+            return "state2"
         }
     }
 
@@ -308,15 +309,15 @@ BaseScene {
             var radius = item.width*0.45
             var x = (index%columns)*item.width + item.width/2 - radius
             var y = grid.anchors.topMargin + Math.floor(index/columns)*item.height + item.height/2 - radius
-            var fillCell = generateState( currentLevel )
-            if( fillCell < 0 ) continue
+            var stateCell = generateState( currentLevel )
+            if( stateCell == "" ) continue
             entityManager.createEntityFromUrlWithProperties(Qt.resolvedUrl("../game/Star.qml"),{
                                                                 "entityId": starId,
                                                                 "radius": radius,
                                                                 "x" : x,
                                                                 "y" : y,
                                                                 "z" : 4,
-                                                                countTouches: fillCell,
+                                                                state: stateCell,
                                                                 starIndex: index,
                                                                 probabilityToGenerateEnergy: 10
                                                             })
@@ -441,6 +442,7 @@ BaseScene {
         onTriggered: {
             var bufBullets = entityManager.getEntityArrayByType("bulletType")
             if( bufBullets.length == 0 ) {
+                playSound("../../assets/sounds/gameOver.wav")
                 stopGame()
                 labelGameOver.visible = true
                 timerGameOver.stop()
@@ -476,6 +478,32 @@ BaseScene {
         var toRemoveEntityTypes = ["starType", "bulletType"];
         entityManager.removeEntitiesByFilter(toRemoveEntityTypes);
     }
+
+
+    Component {
+        id: componentSounds
+        SoundEffectVPlay {
+            id: soundEffect
+            onPlayingChanged: {
+                if( playing == false ) {
+                    soundEffect.destroy()
+                }
+            }
+        }
+    }
+    /*!
+      \qmlmethod void Star::playSound( url file )
+      It plays sounds
+     */
+    function playSound( file ) {
+        var snd = componentSounds.createObject(gameScene, {"source": file});
+        if (snd == null) {
+            console.log("Error creating sound");
+        } else {
+            snd.play()
+        }
+    }
+
 
     Component.onCompleted: {
         entityManager.createPooledEntitiesFromUrl( Qt.resolvedUrl("../game/Bullet.qml"), (numCells*4) )

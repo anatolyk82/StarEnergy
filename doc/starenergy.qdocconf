@@ -1,0 +1,16 @@
+project = Star Energy
+description = Star energy is a small puzzle game written in QML
+sourcedirs = . ../qml
+imagedirs = ./images
+
+sources.fileextensions = "*.qml *qdoc"
+
+outputdir = /tmp/StarEnergy/
+outputformats = HTML
+outputencoding = UTF-8
+
+include($QT_INSTALL_DOCS/global/macros.qdocconf)
+include($QT_INSTALL_DOCS/global/qt-cpp-defines.qdocconf)
+include($QT_INSTALL_DOCS/global/compat.qdocconf)
+include($QT_INSTALL_DOCS/global/fileextensions.qdocconf)
+include($QT_INSTALL_DOCS/global/qt-html-templates-offline.qdocconf)

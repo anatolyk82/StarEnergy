@@ -35,5 +35,5 @@ ios {
 }
 
 DISTFILES += \
-    qml/game/Curtain.qml
+    doc/mainpage.qdoc
 

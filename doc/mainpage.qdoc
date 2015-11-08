@@ -1,0 +1,77 @@
+/*!
+\page index.html overview
+\title StarEnergy
+
+
+\section1 Assets
+All assets, which we need for the game, were taken from open resources such as
+
+\list
+ \li Music:   \l {http://soundimage.org}
+ \li Sounds:  \l {http://www.freesound.org}
+ \li Font:    \l {http://1001freefonts.com}
+\endlist
+
+and are available for free using.
+
+
+\section1
+Game types
+
+Scenes:
+
+\table 50%
+ \header
+  \li Type
+  \li Short desription
+ \row
+  \li \l {Main}
+  \li The main game window
+ \row
+  \li \l {BaseScene}
+  \li The main scene for all scenes in the game.
+ \row
+  \li \l {SettingsScene}
+  \li This scene shows game settings.
+ \row
+  \li \l {CreditsScene}
+  \li This scene shows information about the game.
+ \row
+  \li \l {MenuScene}
+  \li This scene shows the main menu of the game.
+ \row
+  \li \l {GameScene}
+  \li This scene shows the game field.
+\endtable
+
+
+Common types:
+
+\table 50%
+ \header
+  \li Type
+  \li Short desription
+ \row
+  \li \l {Label}
+  \li It shows text on a scene.
+ \row
+  \li \l {MenuButton}
+  \li A push button with a text label and a picture.
+\endtable
+
+
+Game obects:
+
+\table 70%
+ \header
+  \li Type
+  \li Short desription
+ \row
+  \li \l {Wall}
+  \li A physics object on the game scene represented as a wall.
+ \row
+  \li \l {Star}
+  \li A game object.
+\endtable
+
+*/
