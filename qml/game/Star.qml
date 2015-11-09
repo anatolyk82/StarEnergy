@@ -149,65 +149,56 @@ EntityBaseDraggable {
     onStateChanged: {
         console.log(">>>>>>>>>>>>>> star:["+entityId+"] state:["+state+"]")
 
-        if(visibleSprite != null) {
-            visibleSprite.destroy()
-            visibleSprite = null
-        }
+        spriteLongTime.running = false
 
         if( star.state == "state0" )
         {
             createViewFlash()
-            visibleSprite = componentSprite.createObject(star, {
-                                                             "x": starCollider.x,
-                                                             "y": starCollider.y,
-                                                             "frameHeight": 128,
-                                                             "frameWidth": 128,
-                                                             "frameCount": 32,
-                                                             "frameDuration": 100,
-                                                             "loops" : AnimatedSprite.Infinite,
-                                                             "source": "../../assets/img/state0.png"
-                                                         });
-            if (visibleSprite == null) {
-                console.log("ERROR: Error creating object");
-                return
-            }
+
+            spriteLongTime.x = starCollider.x
+            spriteLongTime.y = starCollider.y
+            spriteLongTime.width = star.radius*2
+            spriteLongTime.height = star.radius*2
+            spriteLongTime.source = "../../assets/img/state0.png"
+            spriteLongTime.frameHeight = 128
+            spriteLongTime.frameWidth = 128
+            spriteLongTime.frameCount = 32
+            spriteLongTime.frameDuration = 100
+            spriteLongTime.restart()
+            spriteLongTime.visible = true
         }
         else if( star.state == "state1" )
         {
             createViewFlash()
-            visibleSprite = componentSprite.createObject(star, {
-                                                             "x": starCollider.x,
-                                                             "y": starCollider.y,
-                                                             "frameHeight": 128,
-                                                             "frameWidth": 128,
-                                                             "frameCount": 32,
-                                                             "frameDuration": 100,
-                                                             "loops" : AnimatedSprite.Infinite,
-                                                             "source": "../../assets/img/state1.png"
-                                                         });
-            if (visibleSprite == null) {
-                console.log("ERROR: Error creating object");
-                return
-            }
+
+            spriteLongTime.x = starCollider.x
+            spriteLongTime.y = starCollider.y
+            spriteLongTime.width = star.radius*2
+            spriteLongTime.height = star.radius*2
+            spriteLongTime.source = "../../assets/img/state1.png"
+            spriteLongTime.frameHeight = 128
+            spriteLongTime.frameWidth = 128
+            spriteLongTime.frameCount = 32
+            spriteLongTime.frameDuration = 100
+            spriteLongTime.restart()
+            spriteLongTime.visible = true
 
         }
         else if( star.state == "state2" )
         {
             createViewFlash()
-            visibleSprite = componentSprite.createObject(star, {
-                                                             "x": starCollider.x,
-                                                             "y": starCollider.y,
-                                                             "frameHeight": 128,
-                                                             "frameWidth": 128,
-                                                             "frameCount": 32,
-                                                             "frameDuration": 100,
-                                                             "loops" : AnimatedSprite.Infinite,
-                                                             "source": "../../assets/img/state2.png"
-                                                         });
-            if (visibleSprite == null) {
-                console.log("ERROR: Error creating object");
-                return
-            }
+
+            spriteLongTime.x = starCollider.x
+            spriteLongTime.y = starCollider.y
+            spriteLongTime.width = star.radius*2
+            spriteLongTime.height = star.radius*2
+            spriteLongTime.source = "../../assets/img/state2.png"
+            spriteLongTime.frameHeight = 128
+            spriteLongTime.frameWidth = 128
+            spriteLongTime.frameCount = 32
+            spriteLongTime.frameDuration = 100
+            spriteLongTime.restart()
+            spriteLongTime.visible = true
 
         }
         else if( star.state == "simpleExplosion" )
@@ -223,22 +214,17 @@ EntityBaseDraggable {
         else if( star.state == "giant" )
         {
             createViewFlash()
-            visibleSprite = componentSprite.createObject(star, {
-                                                             "x": starCollider.x - 0.75*star.radius,
-                                                             "y": starCollider.y - 0.75*star.radius,
-                                                             "width": star.radius*3.5,
-                                                             "height": star.radius*3.5,
-                                                             "frameHeight": 256,
-                                                             "frameWidth": 256,
-                                                             "frameCount": 16,
-                                                             "frameDuration": 80,
-                                                             "loops" : AnimatedSprite.Infinite,
-                                                             "source": "../../assets/img/red_star.png"
-                                                         });
-            if (visibleSprite == null) {
-                console.log("ERROR: Error creating object");
-                return
-            }
+            spriteLongTime.x = starCollider.x - 0.75*star.radius
+            spriteLongTime.y = starCollider.y - 0.75*star.radius
+            spriteLongTime.width = star.radius*3.5
+            spriteLongTime.height = star.radius*3.5
+            spriteLongTime.source = "../../assets/img/red_star.png"
+            spriteLongTime.frameHeight = 256
+            spriteLongTime.frameWidth = 256
+            spriteLongTime.frameCount = 16
+            spriteLongTime.frameDuration = 80
+            spriteLongTime.restart()
+            spriteLongTime.visible = true
         }
         else if( star.state == "giantExplosion" )
         {
@@ -288,25 +274,17 @@ EntityBaseDraggable {
     property variant visibleSprite: null
 
     function createViewFlash() {
-        var ss = componentSprite.createObject(star, {
-                                                      "x": starCollider.x - star.radius*0.8,
-                                                      "y": starCollider.y - star.radius,
-                                                      "z": 3,
-                                                      "width": star.radius*4,
-                                                      "height": star.radius*4,
-                                                      "source": "../../assets/img/between.png",
-                                                      "frameHeight": 128,
-                                                      "frameWidth": 128,
-                                                      "frameCount": 32,
-                                                      "frameDuration": 10,
-                                                      "loops" : 1,
-                                                      "running":  true,
-                                                      "visible": true
-                                                  });
-        if (ss == null) {
-            console.log("ERROR: createViewFlash(): Error creating object");
-            return
-        }
+        spriteShortTime.x = starCollider.x - star.radius*0.8
+        spriteShortTime.y = starCollider.y - star.radius
+        spriteShortTime.width = star.radius*4
+        spriteShortTime.height = star.radius*4
+        spriteShortTime.source = "../../assets/img/between.png"
+        spriteShortTime.frameHeight = 128
+        spriteShortTime.frameWidth = 128
+        spriteShortTime.frameCount = 32
+        spriteShortTime.frameDuration = 10
+        spriteShortTime.restart()
+        spriteShortTime.visible = true
     }
 
     function createViewSimpleExplosion() {
@@ -320,56 +298,52 @@ EntityBaseDraggable {
             w = star.radius*6
             h = star.radius*6
         }
-        var sprite = componentSprite.createObject(star, {
-                                                      "x": x,
-                                                      "y": y,
-                                                      "width": w,
-                                                      "height": h,
-                                                      "source": "../../assets/img/end.png",
-                                                      "frameHeight": 128,
-                                                      "frameWidth": 128,
-                                                      "frameCount": 32,
-                                                      "frameDuration": 70,
-                                                      "loops" : 1,
-                                                      "running":  true,
-                                                      "visible": true
-                                                  });
-        if (sprite == null) {
-            console.log("ERROR: createViewSimpleExplosion(): Error creating object");
-            return
-        }
+        spriteShortTime.x = x
+        spriteShortTime.y = y
+        spriteShortTime.width = w
+        spriteShortTime.height = h
+        spriteShortTime.source = "../../assets/img/end.png"
+        spriteShortTime.frameHeight = 128
+        spriteShortTime.frameWidth = 128
+        spriteShortTime.frameCount = 32
+        spriteShortTime.frameDuration = 70
+        spriteShortTime.restart()
+        spriteShortTime.visible = true
     }
 
 
-    Component {
-        id: componentSprite
-        AnimatedSpriteVPlay {
-            id: sprite
-            x: starCollider.x
-            y: starCollider.y
-            width: star.radius*2
-            height: width
-            onRunningChanged: {
-                if (!running) {
-                    sprite.visible = false
-                    sprite.destroy()
-                }
-            }
-        }
-    }
-
-    Rectangle {
-        id: itemPadding
+    AnimatedSpriteVPlay {
+        id: spriteShortTime
+        z: 3
         x: starCollider.x
         y: starCollider.y
         width: star.radius*2
         height: width
-        color: "transparent"
-        //border.color: "gray"
+        loops: 1
+        onRunningChanged: {
+            if (!running) {
+                spriteShortTime.visible = false
+            }
+        }
+    }
+    AnimatedSpriteVPlay {
+        id: spriteLongTime
+        x: starCollider.x
+        y: starCollider.y
+        width: star.radius*2
+        height: width
+        loops: AnimatedSprite.Infinite
+        running: true
+        visible: true
+        onRunningChanged: {
+            if (!running) {
+                spriteLongTime.visible = false
+            }
+        }
     }
 
 
-    selectionMouseArea.anchors.fill: itemPadding
+    selectionMouseArea.anchors.fill: spriteLongTime
     clickingAllowed: gameScene.usersEnergy > 0
     draggingAllowed: false
     onEntityClicked: {
@@ -486,6 +460,7 @@ EntityBaseDraggable {
             }
         }
     }
+
     /*!
       \qmlmethod void Star::playSound( url file )
       It plays sounds
