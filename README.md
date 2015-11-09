@@ -9,3 +9,5 @@
   <td><img src='https://github.com/anatolyk82/StarEnergy/blob/master/doc/screenshots/ss03.jpg'/></td>
  </tr>
 </table>
+ 
+ The game is in development. Source code documentation is created by QDoc.
